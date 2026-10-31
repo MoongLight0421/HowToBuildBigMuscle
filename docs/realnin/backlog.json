@@ -1,0 +1,478 @@
+{
+  "version": "2026-10-31.1",
+  "scope": "admin商城：商品/商城类目/配送/城市",
+  "owner": "RealninX",
+  "status_legend": "本文件为草案；没有创建GitHub Issues，没有完成业务代码；phase区分前端Mock与真实集成。",
+  "source_legend": {
+    "M1": "会议片段01（含摘要与不完整转录）",
+    "M2": "会议片段02（含摘要与不完整转录）",
+    "ADMIN": "管理后台需求文档",
+    "MINI": "小程序需求文档",
+    "PROTO": "ZIP中的原生HTML/JS原型",
+    "DEV": "用户已确认开发规范"
+  },
+  "stories": [
+    {
+      "id": "RN-SETUP-01",
+      "title": "确认范围、接入公共框架与可替换 Mock 数据层",
+      "module": "基础",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P0",
+      "suggested_branch": "realnin/rn-setup-01",
+      "depends_on": [],
+      "acceptance": [
+        "确认仅商品/商城类目/配送/城市，消费团队提供的导航、管理员登录和上传入口，不重写伙伴页面。",
+        "以会议 Vue3 管理端为方案基线；把框架、组件库、Node、包管理器、锁文件和目录决定记录为团队决议后再初始化。",
+        "为四模块建立独立数据层、命名操作和统一请求适配接口；Mock 与 HTTP 实现可替换，不在 View 发请求。",
+        "列出成功、空数据、加载、401/403、校验失败、409冲突、网络失败及保存草稿状态；共享字段、币种和未定项都有记录。"
+      ],
+      "integration_or_open_notes": [
+        "公共框架未就绪时仅交付四模块挂载点和最小隔离演示，不替伙伴实现登录/概览。",
+        "Mock 明确标识，刷新/重启后的数据行为可说明；真实接口未接时不显示“已同步小程序”。"
+      ],
+      "sources": [
+        "M1 13:18:20、13:25:12、13:26:16–13:27:19、13:36:32–13:40:26",
+        "ADMIN §3、§7–11"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-CITY-01",
+      "title": "查看和新增中英双语城市，默认快递",
+      "module": "城市",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-city-01",
+      "depends_on": [
+        "RN-SETUP-01"
+      ],
+      "acceptance": [
+        "城市以稳定 id 关联，中英文名称均有位置，字段名映射为 fulfillment: local/post。",
+        "新增默认 post；空名称、重复名称、字段缺失按已确认规则报错并保留输入。",
+        "成功后列表更新，失败不插入半条记录；原型的纯中文名称和 mode 只在适配层转换。"
+      ],
+      "integration_or_open_notes": [
+        "去重大小写/空格/中英冲突规则需在契约中确定。",
+        "商城与闲置共用城市，只维护城市配置，不改闲置页面或帖子。"
+      ],
+      "sources": [
+        "ADMIN §11",
+        "MINI §4.2、数据表清单"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-CITY-02",
+      "title": "安全切换城市配送方式并提示联动结果",
+      "module": "城市",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-city-02",
+      "depends_on": [
+        "RN-CITY-01"
+      ],
+      "acceptance": [
+        "只允许 local/post 两种值；切换确认、加载和保存结果明确，失败恢复旧状态。",
+        "切到 local 且无可送区时给出配置提示；不伪造区，也不自动替顾客创建地址。",
+        "切到 post 后配送区勾选不作为结算限制；切换不删除旧闲置、不改已支付订单快照。"
+      ],
+      "integration_or_open_notes": [
+        "前端 Mock 验证提示与映射；真实新单资格和历史保留由伙伴联调另验。"
+      ],
+      "sources": [
+        "ADMIN §10–11"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-CAT-01",
+      "title": "读取、添加中英双语商城类目",
+      "module": "商城类目",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-cat-01",
+      "depends_on": [
+        "RN-SETUP-01"
+      ],
+      "acceptance": [
+        "类目具有稳定 id、中英文名和排序字段；排序字段来自小程序表清单，排序编辑界面是否本轮做需确认。",
+        "名称不得空或与有效类目重复；空列表时商品表单明确提示先建类目。",
+        "只访问商城类目数据源，不能混入或修改闲置类目。"
+      ],
+      "integration_or_open_notes": [
+        "中文/英文去重、长度、排序可编辑性在接口契约中确认，不从字符串数组直接推定。"
+      ],
+      "sources": [
+        "ADMIN §9",
+        "MINI 表清单 mall_categories/flea_categories"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-CAT-02",
+      "title": "逻辑删除商城类目并保护商品引用",
+      "module": "商城类目",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-cat-02",
+      "depends_on": [
+        "RN-CAT-01"
+      ],
+      "acceptance": [
+        "有任何仍上架商品引用时拒绝删除，包括可售为0的缺货商品。",
+        "请求失败或409引用变化时保留类目并说明原因；成功才更新当前列表。",
+        "HTTP DELETE 是接口动作，后端须映射逻辑删除；删除不影响闲置类目与历史引用。"
+      ],
+      "integration_or_open_notes": [
+        "后端另验同名重建、再次删除、恢复冲突和历史；前端不设计物理删除捷径。"
+      ],
+      "sources": [
+        "ADMIN §9",
+        "DEV 逻辑删除与唯一性"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-01",
+      "title": "查看商品列表与服务端库存状态",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-01",
+      "depends_on": [
+        "RN-SETUP-01",
+        "RN-CAT-01"
+      ],
+      "acceptance": [
+        "列表展示图片、名称、类目、价格、账面、有效锁定、可售和状态。",
+        "锁定/可售由数据层接收服务端或标明的 Mock 返回，View 不读取本地订单数组重算为事实。",
+        "上架且可售为0=缺货；下架独立于缺货；加载、空数据、失败与重试都有清楚界面。"
+      ],
+      "integration_or_open_notes": [
+        "分页/筛选若团队未要求只作为后续建议；金额格式与币种分开确认。"
+      ],
+      "sources": [
+        "ADMIN §7",
+        "PROTO app.js 187–192、310–321"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-02",
+      "title": "新增和编辑双语商品及合法价格、类目",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-02",
+      "depends_on": [
+        "RN-PROD-01",
+        "RN-CAT-01"
+      ],
+      "acceptance": [
+        "新增/编辑共用表单，包含中英文名称/简介/详情、价格、有效商城类目及原型必需字段；必填和缺译规则先对齐。",
+        "价格大于0且最多两位小数，经精确转换为整数分；拒绝空值、非有限数、科学计数和超范围输入。",
+        "类目必须仍有效；保存时被另一人删除或版本冲突则失败并保留草稿，不保存半条商品。",
+        "不新增规格、规格价、优惠券或评价字段；取消编辑不污染列表。"
+      ],
+      "integration_or_open_notes": [
+        "原型只有单语言字段，MINI要求双语；字段名和最大长度待契约确认。"
+      ],
+      "sources": [
+        "ADMIN §8",
+        "MINI 双语内容及商品表清单"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-03",
+      "title": "选择、预览和排序商品主图与详情图",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-03",
+      "depends_on": [
+        "RN-PROD-02"
+      ],
+      "acceptance": [
+        "至少保留一张；第一张为主图，后续为详情图；可调整顺序并保存对象引用和图片尺寸元数据。",
+        "前端选择文件、预览、校验类型/大小、上传中/失败/重试/取消有完整状态；先用明确标识的 Mock 上传适配。",
+        "正式上传授权由公共后端提供，客户端不持有长期云密钥；失败不得伪造可访问地址。"
+      ],
+      "integration_or_open_notes": [
+        "真实对象存储上传、权限、孤立对象和版本恢复属于后续集成验收；本轮不创建Bucket。"
+      ],
+      "sources": [
+        "ADMIN §8",
+        "MINI 图片比例/商品图片表",
+        "DEV 对象存储"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-04",
+      "title": "修改账面库存与入库，处理预留和并发冲突",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-04",
+      "depends_on": [
+        "RN-PROD-02"
+      ],
+      "acceptance": [
+        "账面是非负整数，入库是正整数；入库先作用于编辑草稿，保存成功才生效。",
+        "修改后账面不得低于服务器最新有效待支付预留量；前端提示并保持输入，冲突不覆盖。",
+        "展示账面/锁定/可售三项且不允许提交锁定和可售为权威字段；重复点击不会提交重复入库。"
+      ],
+      "integration_or_open_notes": [
+        "Mock模拟另一店员/订单变化；后端上线后另验统一 version 乐观并发及幂等协议。",
+        "退款不自动回库；stock_locks预留概念不等于允许MySQL悲观业务锁。"
+      ],
+      "sources": [
+        "ADMIN §7–8",
+        "DEV 乐观锁与数据库业务锁限制"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-05",
+      "title": "维护商品上下架和改价的展示边界",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-05",
+      "depends_on": [
+        "RN-PROD-02"
+      ],
+      "acceptance": [
+        "可售为0仍可上架，列表显示缺货；取消上架后显示已下架。",
+        "保存失败时不先永久切换列表状态；版本冲突明确提示刷新/重新确认。",
+        "改价和上下架只影响新购物路径，不重算既有订单快照，不改伙伴订单/支付实现。"
+      ],
+      "integration_or_open_notes": [
+        "后续联合验收下架商品在顾客列表/搜索不可购买，历史订单仍可展示快照。"
+      ],
+      "sources": [
+        "ADMIN §7–8",
+        "MINI §4.5"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-PROD-06",
+      "title": "维护基础点赞并保留用户真实点赞",
+      "module": "商品",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-prod-06",
+      "depends_on": [
+        "RN-PROD-02"
+      ],
+      "acceptance": [
+        "基础点赞为非负整数；负数、小数、空值和非法数值按契约拒绝。",
+        "基础点赞与用户点赞分字段表达，修改基础值不删除或覆盖用户点赞记录。",
+        "保存失败保留草稿，列表与编辑页显示口径一致。"
+      ],
+      "integration_or_open_notes": [
+        "顾客点赞/取消点赞接口由移动端与后端伙伴实现；不在本任务扩展用户交互。展示点赞数=基础点赞+真实用户点赞数；改基础值不清除用户记录。"
+      ],
+      "sources": [
+        "ADMIN §8",
+        "MINI 商城点赞规则"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-DEL-01",
+      "title": "维护统一线下配送费",
+      "module": "配送",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-del-01",
+      "depends_on": [
+        "RN-SETUP-01"
+      ],
+      "acceptance": [
+        "线下费用是全店统一配置，不按距离；页面元输入、契约整数分。",
+        "拒绝空值、非法精度、科学计数和非有限数；是否允许0、最大值与币种先确认，失败不覆盖旧配置。",
+        "线下不使用快递包邮规则；仅影响新订单，保存状态与实际生效边界一致。"
+      ],
+      "integration_or_open_notes": [
+        "默认6元是原型样例，不是已确认定价。"
+      ],
+      "sources": [
+        "ADMIN §10"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-DEL-02",
+      "title": "维护快递邮费与包邮门槛",
+      "module": "配送",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-del-02",
+      "depends_on": [
+        "RN-DEL-01"
+      ],
+      "acceptance": [
+        "快递基础邮费与商品金额包邮门槛分开维护，达到门槛时邮费为0。",
+        "验证低于/等于/高于门槛的预览样例，明确该预览不是正式结算。",
+        "严格金额校验、冲突和失败恢复与线下配置一致；历史订单不重算。"
+      ],
+      "integration_or_open_notes": [
+        "默认8/50元是样例；0门槛/0邮费是否允许、阈值比较基数先对齐。"
+      ],
+      "sources": [
+        "ADMIN §10",
+        "MINI §4.8"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-DEL-03",
+      "title": "按线下城市配置可送区",
+      "module": "配送",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-del-03",
+      "depends_on": [
+        "RN-CITY-02"
+      ],
+      "acceptance": [
+        "只展示 local 城市的区及可送开关；post城市无区级结算限制。",
+        "无区来源或一个区也未启用时给出可理解提示，保存地址与允许付款不能混为一事。",
+        "勾选/保存成功才确认生效；不丢失费用或时段尚未保存草稿；失败可恢复。"
+      ],
+      "integration_or_open_notes": [
+        "真实资格以服务器为准；NO_DELIVERY_AREA由下单端执行，用户仍可保存不可送地址。",
+        "区数据来自伙伴地图/地址契约，本人不实现GoogleMap。"
+      ],
+      "sources": [
+        "ADMIN §10–11"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-DEL-04",
+      "title": "维护每日共用送达时段",
+      "module": "配送",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-del-04",
+      "depends_on": [
+        "RN-DEL-03"
+      ],
+      "acceptance": [
+        "每条保存名称、开始钟点、结束钟点、启用标记；支持新增、编辑、删除、停用和恢复。停用后新的线下订单不可选该时段，重新启用后可选；Mock中验证选择数据，真实消费端效果后续联调。",
+        "至少保留一条时段配置；是否至少一条启用、跨日/重叠/时区规则需确认后编码，不能擅自当既定业务。",
+        "后台不逐日配置今天/明天；消费端明天起7天、快递不选时段；旧订单保存的绝对时间不变。",
+        "区或费用操作不能丢时段草稿；保存失败保留输入，成功才宣告生效。"
+      ],
+      "integration_or_open_notes": [
+        "钟点格式只是最低校验；是否start<end必须由跨日规则确认。"
+      ],
+      "sources": [
+        "ADMIN §10",
+        "MINI §4.8、§8.1"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    },
+    {
+      "id": "RN-VERIFY-01",
+      "title": "完成四模块前端回归并交付接口契约",
+      "module": "验收",
+      "owner": "RealninX",
+      "status": "Todo",
+      "phase": "Frontend",
+      "priority": "P1",
+      "suggested_branch": "realnin/rn-verify-01",
+      "depends_on": [
+        "RN-PROD-03",
+        "RN-PROD-04",
+        "RN-PROD-05",
+        "RN-PROD-06",
+        "RN-CAT-02",
+        "RN-DEL-02",
+        "RN-DEL-04"
+      ],
+      "acceptance": [
+        "逐项回归正常、空态、失败、401/403、409、重复提交与草稿保留；商品/类目/城市/配送依赖连贯。",
+        "每张Story附页面截图、执行方式、真实结果和未执行项；PR仅包含本人scope与必要共享约束。",
+        "交付字段/错误码/Mock/接口文档版本和联调清单；只有Mock证据时只标Frontend Done，Integration保持待联调。",
+        "完成项记录PR/commit/测试证据；后续修改必须新Issue引用原因和回归，不让AI无任务重写。"
+      ],
+      "integration_or_open_notes": [
+        "真实Go/MySQL/Redis/支付/对象存储/移动端联调未做就明确未做，不能用前端自测替代。"
+      ],
+      "sources": [
+        "M1 13:20:39–13:24:46",
+        "ADMIN §7–11",
+        "DEV harness与验证边界"
+      ],
+      "github_issue_number": null,
+      "github_issue_url": null,
+      "evidence": []
+    }
+  ],
+  "http_status_mapping_note": "401/403/409为拟议HTTP映射及Mock场景；原PRD只确认ok/code/message业务包络，实际状态映射待团队契约确认。"
+}

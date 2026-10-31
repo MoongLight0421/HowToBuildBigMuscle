@@ -1,0 +1,68 @@
+{
+  "version": "2026-10-31.1",
+  "source_roots": [
+    "backend",
+    "frontend/admin",
+    "frontend/mobile"
+  ],
+  "excluded_directories": [
+    "harness",
+    "docs",
+    "data",
+    "source",
+    "outputs",
+    "vendor",
+    "node_modules",
+    "dist",
+    "build",
+    "unpackage",
+    ".git",
+    "__pycache__",
+    ".reports",
+    ".venv"
+  ],
+  "source_extensions": [
+    ".go",
+    ".vue",
+    ".js",
+    ".ts",
+    ".jsx",
+    ".tsx",
+    ".sql"
+  ],
+  "config_extensions": [
+    ".json",
+    ".yaml",
+    ".yml",
+    ".toml",
+    ".ini",
+    ".conf",
+    ".env",
+    ".pem",
+    ".key"
+  ],
+  "maximum_file_bytes": 2097152,
+  "rules": {
+    "SEC001": "Block recognizable AWS access key IDs, private keys and literal credential assignments; never print matched values.",
+    "SEC002": "Block credential CSV files in engineering source directories.",
+    "VIEW001": "Block direct network calls and selected database/cache/object storage SDK imports in Vue views.",
+    "LAYER001": "Block recognized Go controller-to-dao, service-to-controller and dao-to-service/controller imports.",
+    "LAYER002": "Block selected direct database/cache/object storage SDK imports in Go controllers.",
+    "SQL001": "Block explicit SQL locking and database advisory lock calls in SQL/source text.",
+    "SQL002": "Block recognizable SQL physical deletion and cascading deletion in SQL/source text.",
+    "DDL001": "Require id, four audit fields and is_deleted in supported CREATE TABLE declarations.",
+    "DDL002": "Require an independent id primary key and non-null is_deleted defaulting to zero.",
+    "DDL003": "Require is_deleted as the leading column of supported non-unique composite query indexes.",
+    "INPUT001": "Fail the static gate when an in-scope file is too large or cannot be read as UTF-8."
+  },
+  "manual_rules": {
+    "REVIEW001": "Accurate Chinese/English comments for every handwritten function and method, named business operations, restrained function values and callbacks.",
+    "REVIEW002": "Complete controller/service/dao separation, object responsibilities, explicit dependencies and all indirect layer paths.",
+    "REVIEW003": "Separate View and data files; admin Vue 3 is the current implementation proposal, mobile uses Uniapp. Validate reactive local form state and use one transport wrapper per platform; use uni.request on Uniapp.",
+    "REVIEW004": "MySQL 8.0+; 3NF as design goal, justified 2NF and controlled redundancy; audit behavior, parameterized queries and query plans.",
+    "REVIEW005": "Soft deletion in all ordinary reads/joins/writes, repeat deletion/recreation/history-safe unique constraints, ORM behavior and migration safety.",
+    "REVIEW006": "Atomic version-and-state optimistic updates, affected-row checks, bounded conflict handling and no database-as-business-lock usage.",
+    "REVIEW007": "Every Redis cache write has positive base TTL plus random window, atomic write/expiry, short-lived negative caching and penetration/hot-key protections.",
+    "REVIEW008": "Object storage environment/business/version key prefixes, versioning/retention/lifecycle, access control and provider-specific behavior."
+  }
+}
